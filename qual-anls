@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qualitative Analysis | உப்பு பகுப்பாய்வு</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .test-tube-rack {
+            background: #8d6e63; height: 20px; width: 250px; 
+            margin: 150px auto 0; border-radius: 5px; position: relative;
+        }
+        .test-tube {
+            width: 35px; height: 150px;
+            border: 2px solid #ccc; border-top: none;
+            border-radius: 0 0 15px 15px;
+            position: absolute; left: 50%; bottom: 20px;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+        }
+        .sample {
+            position: absolute; bottom: 0; width: 100%;
+            height: 30px; background: #fff; /* White salt powder */
+            transition: all 1s;
+        }
+        .bubbles {
+            position: absolute; bottom: 30px; width: 100%;
+            display: none; text-align: center;
+        }
+        .bubble {
+            display: inline-block; width: 8px; height: 8px;
+            background: rgba(200,200,200,0.6); border-radius: 50%;
+            animation: rise 1s infinite;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        .fumes {
+            position: absolute; top: -50px; left: 0; width: 100%;
+            height: 50px; background: rgba(200,200,200,0.2);
+            filter: blur(10px); display: none;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container py-5 text-center">
+    <h2 class="mb-4">தரமான பகுப்பாய்வு (Qualitative Analysis)</h2>
+    <p class="text-muted">கொடுக்கப்பட்ட உப்பில் உள்ள அயனிகளைக் கண்டறிதல்</p>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card shadow-sm p-4">
+                <h5>சோதனையைத் தேர்ந்தெடுக்கவும்</h5>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-outline-primary" onclick="testCarbonate()">
+                        1. கார்பனேட் சோதனை (Dil. HCl)
+                    </button>
+                    <button class="btn btn-outline-success" onclick="testAmmonium()">
+                        2. அம்மோனியம் சோதனை (NaOH)
+                    </button>
+                    <button class="btn btn-outline-warning" onclick="testLead()">
+                        3. லெட் (Lead) சோதனை (KI)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="bg-white p-5 rounded shadow-lg position-relative" style="min-height: 400px;">
+                <div id="fumes" class="fumes"></div>
+                <div class="test-tube">
+                    <div id="bubbles" class="bubbles">
+                        <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+                    </div>
+                    <div id="sample" class="sample"></div>
+                </div>
+                <div class="test-tube-rack"></div>
+                
+                <div id="resultBox" class="alert mt-5 d-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button class="btn btn-secondary" onclick="resetLab()">மீண்டும் செய்க (Reset)</button>
+        <a href="index.html" class="btn btn-link text-dark">முகப்பு</a>
+    </div>
+</div>
+
+<script>
+    const sample = document.getElementById('sample');
+    const bubbles = document.getElementById('bubbles');
+    const fumes = document.getElementById('fumes');
+    const result = document.getElementById('resultBox');
+
+    function resetVisuals() {
+        bubbles.style.display = 'none';
+        fumes.style.display = 'none';
+        sample.style.height = '30px';
+        sample.style.backgroundColor = '#fff';
+        result.classList.add('d-none');
+    }
+
+    function testCarbonate() {
+        resetVisuals();
+        setTimeout(() => {
+            bubbles.style.display = 'block';
+            result.className = "alert alert-primary mt-5";
+            result.innerHTML = "<strong>காணப்படுபவை:</strong> நுரைத்துப் பொங்குதல் (Effervescence) ஏற்படுகிறது.<br><strong>முடிவு:</strong> கார்பனேட் ($CO_3^{2-}$) உறுதியானது.";
+            result.classList.remove('d-none');
+        }, 500);
+    }
+
+    function testAmmonium() {
+        resetVisuals();
+        setTimeout(() => {
+            fumes.style.display = 'block';
+            fumes.style.backgroundColor = 'rgba(200,200,200,0.3)';
+            result.className = "alert alert-success mt-5";
+            result.innerHTML = "<strong>காணப்படுபவை:</strong> அம்மோனியா நெடி வீசுகிறது.<br><strong>முடிவு:</strong> அம்மோனியம் ($NH_4^+$) இருக்க வாய்ப்புள்ளது.";
+            result.classList.remove('d-none');
+        }, 500);
+    }
+
+    function testLead() {
+        resetVisuals();
+        setTimeout(() => {
+            sample.style.backgroundColor = '#ffeb3b'; // Yellow precipitate
+            sample.style.height = '60px';
+            result.className = "alert alert-warning mt-5";
+            result.innerHTML = "<strong>காணப்படுபவை:</strong> மஞ்சள் நிற வீழ்படிவு (Yellow PPT) உருவாகிறது.<br><strong>முடிவு:</strong> லெட் ($Pb^{2+}$) உறுதியானது.";
+            result.classList.remove('d-none');
+        }, 500);
+    }
+
+    function resetLab() {
+        resetVisuals();
+    }
+</script>
+
+</body>
+</html>
