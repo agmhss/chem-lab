@@ -1,1 +1,156 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volumetric Analysis | பருமனறி பகுப்பாய்வு</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #fdfdfd; font-family: 'Segoe UI', sans-serif; }
+        .lab-setup { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
+        
+        /* Burette Design */
+        .burette-stand { width: 10px; height: 400px; background: #333; position: relative; left: -60px; }
+        .burette-clamp { width: 60px; height: 10px; background: #555; position: absolute; top: 100px; left: 0; }
+        .burette {
+            width: 20px; height: 350px; border: 2px solid #999; 
+            border-radius: 5px; position: absolute; left: 50px; top: -50px;
+            background: rgba(200, 230, 255, 0.3); overflow: hidden;
+        }
+        .burette-liquid {
+            width: 100%; position: absolute; bottom: 0;
+            background: rgba(173, 216, 230, 0.6); transition: height 0.5s linear;
+        }
 
+        /* Conical Flask Design */
+        .flask-container { margin-top: 100px; position: relative; }
+        .flask {
+            width: 100px; height: 120px; border: 3px solid #666;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+            background: #fff; position: relative; overflow: hidden;
+        }
+        .flask-liquid {
+            width: 100%; height: 40%; position: absolute; bottom: 0;
+            background: #fff; transition: background 0.8s ease;
+        }
+
+        /* Drop Animation */
+        .drop {
+            width: 6px; height: 6px; background: lightblue;
+            border-radius: 50%; position: absolute; left: 57px; top: 310px;
+            display: none; animation: fall 0.5s infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(80px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-4 text-center">
+    <h2 class="mb-3">பருமனறி பகுப்பாய்வு (Volumetric Analysis - Titration)</h2>
+    <p class="text-muted">அமில-கார டைட்ரேஷன் மூலம் இறுதிப் புள்ளியைக் கண்டறிதல்.</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h5>கட்டுப்பாடுகள் (Controls)</h5>
+                <hr>
+                <p><strong>படி 1:</strong> பினோப்தலீன் நிறங்காட்டி சேர்க்கவும்.</p>
+                <button id="indicatorBtn" class="btn btn-sm btn-outline-info mb-3" onclick="addIndicator()">Add Indicator</button>
+                
+                <p><strong>படி 2:</strong> பீயூರೆட் திருகினைத் திறக்கவும்.</p>
+                <button id="startBtn" class="btn btn-success" onclick="startTitration()" disabled>Start Titration</button>
+                <button class="btn btn-danger" onclick="stopTitration()">Stop</button>
+                
+                <div class="mt-4 p-2 bg-light border">
+                    <h6>பீயூರೆட் அளவு: <span id="reading">0.0</span> ml</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 bg-white rounded shadow-sm p-5">
+            <div class="lab-setup">
+                <div class="burette-stand">
+                    <div class="burette-clamp">
+                        <div class="burette">
+                            <div id="bLiquid" class="burette-liquid" style="height: 90%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="drop" class="drop"></div>
+                
+                <div class="flask-container">
+                    <div class="flask">
+                        <div id="fLiquid" class="flask-liquid"></div>
+                    </div>
+                    <small>கோணல் குடுவை (HCl)</small>
+                </div>
+            </div>
+            
+            <div id="result" class="alert mt-4 d-none"></div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button class="btn btn-secondary" onclick="location.reload()">Reset</button>
+        <a href="index.html" class="btn btn-link">முகப்பு</a>
+    </div>
+</div>
+
+<script>
+    let bLevel = 90;
+    let reading = 0.0;
+    let timer;
+    let isIndicatorAdded = false;
+
+    function addIndicator() {
+        isIndicatorAdded = true;
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('indicatorBtn').disabled = true;
+        alert("நிறங்காட்டி சேர்க்கப்பட்டது. இப்போது சோதனையைத் தொடங்கலாம்.");
+    }
+
+    function startTitration() {
+        document.getElementById('drop').style.display = 'block';
+        timer = setInterval(() => {
+            if (reading < 25) {
+                bLevel -= 0.5;
+                reading += 0.1;
+                document.getElementById('bLiquid').style.height = bLevel + '%';
+                document.getElementById('reading').innerText = reading.toFixed(1);
+
+                // Endpoint at 20.0 ml
+                if (reading >= 20.0) {
+                    document.getElementById('fLiquid').style.background = "pink";
+                }
+            } else {
+                stopTitration();
+            }
+        }, 100);
+    }
+
+    function stopTitration() {
+        clearInterval(timer);
+        document.getElementById('drop').style.display = 'none';
+        
+        const result = document.getElementById('result');
+        result.classList.remove('d-none');
+        
+        if (reading >= 19.8 && reading <= 20.2) {
+            result.className = "alert alert-success mt-4";
+            result.innerHTML = "<strong>வெற்றி!</strong> சரியான இறுதிப் புள்ளி (End Point) கண்டறியப்பட்டது. நிறம் இளஞ்சிவப்பாக (Pale Pink) மாறியது.";
+        } else if (reading > 20.2) {
+            result.className = "alert alert-danger mt-4";
+            result.innerHTML = "<strong>தவறு!</strong> அதிகப்படியான கரைசல் சேர்க்கப்பட்டது (Over Titrated). நிறம் அடர் ஊதாவாக மாறிவிட்டது.";
+            document.getElementById('fLiquid').style.background = "magenta";
+        } else {
+            result.className = "alert alert-warning mt-4";
+            result.innerHTML = "இன்னும் இறுதிப் புள்ளி எட்டப்படவில்லை. பீயூರೆட் அளவைத் தொடரவும்.";
+        }
+    }
+</script>
+
+</body>
+</html>
