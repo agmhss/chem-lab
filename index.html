@@ -32,6 +32,32 @@
         .badge-custom { background-color: #00d4ff; color: #000; }
         .nav-pills .nav-link.active { background-color: #0b6623; }
         .nav-pills .nav-link { color: #0b6623; font-weight: bold; }
+        <style>
+    /* கார்டின் அளவைச் சீராக்க */
+    .lab-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* பட்டனை கீழே தள்ளும் */
+        min-height: 300px; /* கார்டின் குறைந்தபட்ச உயரம் */
+        margin-bottom: 20px;
+    }
+
+    /* ஐகான் மற்றும் உரையை அழகாகக் காட்ட */
+    .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* பட்டனை மொபைலில் முழு அகலத்திற்கு மாற்ற (Optional) */
+    @media (max-width: 768px) {
+        .btn-outline-primary {
+            width: 100%;
+        }
+    }
+
     </style>
 </head>
 <body>
