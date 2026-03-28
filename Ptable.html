@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Explorer | தனிம வரிசை அட்டவணை</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
+        .pt-container { padding: 40px 20px; }
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 5px;
+            overflow-x: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .element-card {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+        }
+        .element-card:hover { transform: scale(1.1); z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .symbol { font-weight: bold; font-size: 1.2rem; }
+        .atomic-number { font-size: 0.6rem; align-self: flex-start; padding-left: 3px; }
+        
+        /* Category Colors */
+        .non-metal { background-color: #a0e0a0; }
+        .noble-gas { background-color: #c0ffff; }
+        .alkali-metal { background-color: #ffb0b0; }
+        .alkaline-earth { background-color: #ffe0b0; }
+        .metalloid { background-color: #cccc99; }
+        .transition-metal { background-color: #ffcccc; }
+
+        .info-panel {
+            background: #159957;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            min-height: 120px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid pt-container">
+    <h2 class="text-center mb-4">தனிம வரிசை அட்டவணை ஆய்வாளர் (Periodic Table Explorer)</h2>
+
+    <div id="infoPanel" class="info-panel text-center">
+        <h3 id="elName">ஏதாவது ஒரு தனிமத்தைத் தேர்ந்தெடுக்கவும்</h3>
+        <p id="elDetail">தனிமத்தின் விவரங்கள் இங்கே தோன்றும்.</p>
+    </div>
+
+    <div class="periodic-table" id="tableGrid">
+        </div>
+
+    <div class="mt-4 text-center">
+        <a href="index.html" class="btn btn-secondary">பின்புறம் செல்ல (Back)</a>
+    </div>
+</div>
+
+<script>
+    // Sample Data for first 20 elements
+    const elements = [
+        { num: 1, sym: "H", name: "Hydrogen", ta: "ஹைட்ரஜன்", cat: "non-metal", desc: "மிகவும் லேசான வாயு, அண்டத்தில் அதிகம் உள்ளது." },
+        { num: 2, sym: "He", name: "Helium", ta: "ஹீலியம்", cat: "noble-gas", desc: "மந்த வாயு, பலூன்களில் பயன்படுத்தப்படுகிறது." },
+        { num: 3, sym: "Li", name: "Lithium", ta: "லித்தியம்", cat: "alkali-metal", desc: "மின்கலன்கள் (Batteries) தயாரிக்கப் பயன்படுகிறது." },
+        { num: 4, sym: "Be", name: "Beryllium", ta: "பெரிலியம்", cat: "alkaline-earth", desc: "விண்வெளி ஆராய்ச்சி சாதனங்களில் பயனாகிறது." },
+        { num: 5, sym: "B", name: "Boron", ta: "போரான்", cat: "metalloid", desc: "கண்ணாடி மற்றும் செராமிக் தொழிலில் பயன்படுகிறது." },
+        { num: 6, sym: "C", name: "Carbon", ta: "கார்பன்", cat: "non-metal", desc: "வைரம் மற்றும் நிலக்கரியின் அடிப்படை." },
+        { num: 7, sym: "N", name: "Nitrogen", ta: "நைட்ரஜன்", cat: "non-metal", desc: "உயிரினங்களின் புரத வளர்ச்சிக்கு அவசியம்." },
+        { num: 8, sym: "O", name: "Oxygen", ta: "ஆக்ஸிஜன்", cat: "non-metal", desc: "உயிரினங்கள் சுவாசிக்க இன்றியமையாதது." },
+        { num: 9, sym: "F", name: "Fluorine", ta: "புளோரின்", cat: "non-metal", desc: "பற்பசையில் சேர்க்கப்படும் ஒரு தனிமம்." },
+        { num: 10, sym: "Ne", name: "Neon", ta: "நியான்", cat: "noble-gas", desc: "மின் விளக்குகள் மற்றும் விளம்பரப் பலகைகளில் பயனாகிறது." },
+        { num: 11, sym: "Na", name: "Sodium", ta: "சோடியம்", cat: "alkali-metal", desc: "சாதாரண உப்பில் (NaCl) உள்ள ஒரு உலோகம்." },
+        { num: 12, sym: "Mg", name: "Magnesium", ta: "மெக்னீசியம்", cat: "alkaline-earth", desc: "பட்டாசுகள் மற்றும் மருந்துகளில் பயனாகிறது." },
+        { num: 13, sym: "Al", name: "Aluminium", ta: "அலுமினியம்", cat: "transition-metal", desc: "மிகவும் லேசான உலோகம், பாத்திரங்கள் செய்யப் பயன்." },
+        { num: 14, sym: "Si", name: "Silicon", ta: "சிலிக்கான்", cat: "metalloid", desc: "கம்ப்யூட்டர் சிப்கள் தயாரிக்கப் பயன்படுகிறது." },
+        { num: 15, sym: "P", name: "Phosphorus", ta: "பாஸ்பரஸ்", cat: "non-metal", desc: "தீக்குச்சிகள் மற்றும் உரங்களில் பயனாகிறது." },
+        { num: 16, sym: "S", name: "Sulphur", ta: "சல்பர் (கந்தகம்)", cat: "non-metal", desc: "வெடிமருந்து மற்றும் ரப்பர் தயாரிக்கப் பயன்." },
+        { num: 17, sym: "Cl", name: "Chlorine", ta: "குளோரின்", cat: "non-metal", desc: "நீரை சுத்திகரிக்கப் பயன்படுகிறது." },
+        { num: 18, sym: "Ar", name: "Argon", ta: "ஆர்கான்", cat: "noble-gas", desc: "பல்புகளில் (Light bulbs) மந்த சூழலை உருவாக்கப் பயன்." },
+        { num: 19, sym: "K", name: "Potassium", ta: "பொட்டாசியம்", cat: "alkali-metal", desc: "வாழைப்பழத்தில் அதிகமுள்ள சத்துப்பொருள்." },
+        { num: 20, sym: "Ca", name: "Calcium", ta: "கால்சியம்", cat: "alkaline-earth", desc: "எலும்புகள் மற்றும் பற்களின் வலிமைக்கு அவசியம்." }
+    ];
+
+    const tableGrid = document.getElementById('tableGrid');
+
+    elements.forEach(el => {
+        const div = document.createElement('div');
+        div.className = `element-card ${el.cat}`;
+        div.innerHTML = `
+            <div class="atomic-number">${el.num}</div>
+            <div class="symbol">${el.sym}</div>
+            <div style="font-size:0.6rem">${el.name}</div>
+        `;
+        div.onclick = () => showInfo(el);
+        tableGrid.appendChild(div);
+    });
+
+    function showInfo(el) {
+        document.getElementById('elName').innerText = `${el.ta} (${el.name}) - [${el.sym}]`;
+        document.getElementById('elDetail').innerText = `அணு எண்: ${el.num} | விவரம்: ${el.desc}`;
+        document.getElementById('infoPanel').style.backgroundColor = getComputedStyle(document.querySelector(`.${el.cat}`)).backgroundColor;
+        document.getElementById('infoPanel').style.color = "#000";
+    }
+</script>
+
+</body>
+</html>
