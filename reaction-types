@@ -1,1 +1,107 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction Types Lab | வேதி வினைகள்</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #fcf8e3; font-family: 'Segoe UI', sans-serif; }
+        .lab-space { 
+            background: #fff; border: 2px solid #ddd; border-radius: 15px; 
+            min-height: 400px; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        
+        /* Animation Classes */
+        .mg-ribbon { width: 100px; height: 10px; background: #silver; border: 1px solid #999; }
+        .bright-flash { 
+            position: absolute; width: 100%; height: 100%; 
+            background: white; opacity: 0; pointer-events: none;
+        }
+        .beaker-liquid { 
+            width: 120px; height: 150px; border: 3px solid #333; 
+            border-top: none; border-radius: 0 0 15px 15px; position: relative; 
+        }
+        .fill { position: absolute; bottom: 0; width: 100%; height: 70%; transition: all 2s; }
+        
+        @keyframes burn {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(5) blur(5px); transform: scale(1.1); }
+            100% { background: #eee; filter: brightness(1); }
+        }
+        .burning { animation: burn 2s forwards; }
+    </style>
+</head>
+<body>
 
+<div class="container py-5 text-center">
+    <h2 class="mb-4">வேதி வினைகளின் வகைகள் (Types of Chemical Reactions)</h2>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="list-group shadow-sm">
+                <button onclick="showCombination()" class="list-group-item list-group-item-action">
+                    <strong>1. சேர்க்கை வினை</strong><br><small>Combination (Mg + O₂)</small>
+                </button>
+                <button onclick="showDisplacement()" class="list-group-item list-group-item-action">
+                    <strong>2. இடப்பெயர்ச்சி வினை</strong><br><small>Displacement (Fe + CuSO₄)</small>
+                </button>
+            </div>
+            <div id="equationDisplay" class="mt-4 p-3 bg-white border rounded shadow-sm fw-bold text-primary">
+                வினையைத் தேர்ந்தெடுக்கவும்
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="lab-space shadow-lg" id="labSpace">
+                <div id="flash" class="bright-flash"></div>
+                <p class="text-muted">இங்கே அனிமேஷன் தோன்றும்</p>
+            </div>
+            <div id="obsMsg" class="alert alert-dark mt-3">Observation: வினையைக் கவனித்து முடிவைக் கண்டறியவும்.</div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="index.html" class="btn btn-secondary">முகப்புப் பக்கத்திற்குச் செல்ல</a>
+    </div>
+</div>
+
+<script>
+    const lab = document.getElementById('labSpace');
+    const msg = document.getElementById('obsMsg');
+    const eq = document.getElementById('equationDisplay');
+    const flash = document.getElementById('flash');
+
+    function showCombination() {
+        lab.innerHTML = '<div id="mg" class="mg-ribbon"></div>';
+        eq.innerHTML = '2Mg + O₂ → 2MgO';
+        msg.innerText = "மெக்னீசியம் நாடாவை எரிக்கத் தயாராகுங்கள்...";
+        
+        setTimeout(() => {
+            document.getElementById('mg').classList.add('burning');
+            flash.style.opacity = "1";
+            setTimeout(() => flash.style.opacity = "0", 300);
+            msg.innerText = "மிகவும் பிரகாசமான ஒளியுடன் எரிந்து மெக்னீசியம் ஆக்சைடு (சாம்பல்) உருவாகிறது.";
+        }, 1000);
+    }
+
+    function showDisplacement() {
+        lab.innerHTML = `
+            <div class="beaker-liquid">
+                <div id="liq" class="fill" style="background: rgba(0,0,255,0.5);"></div>
+                <div id="nail" style="width:10px; height:80px; background:grey; margin: 10px auto;"></div>
+            </div>`;
+        eq.innerHTML = 'Fe + CuSO₄ → FeSO₄ + Cu';
+        msg.innerText = "நீல நிற தாமிர சல்பேட் கரைசலில் இரும்பு ஆணி வைக்கப்பட்டுள்ளது...";
+
+        setTimeout(() => {
+            document.getElementById('liq').style.background = "rgba(0,255,0,0.3)"; // Turns Greenish
+            document.getElementById('nail').style.background = "#8b4513"; // Turns Brownish (Copper coat)
+            msg.innerText = "கரைசலின் நீல நிறம் மறைந்து பச்சை நிறமாக மாறுகிறது. ஆணியின் மீது செப்பு படிகிறது.";
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
