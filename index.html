@@ -8,56 +8,53 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body { background-color: #f0f7f4; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
         .hero-section {
             background: linear-gradient(135deg, #0b6623, #159957);
             color: white;
             padding: 3rem 0;
             border-bottom: 5px solid #00d4ff;
         }
+
+        /* Card Styling */
         .lab-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             border: none;
             border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 320px;
+            margin-bottom: 20px;
         }
+
         .lab-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
+
         .card-icon {
             font-size: 3rem;
             color: #159957;
             margin-bottom: 15px;
         }
+
+        .card-body-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         .badge-custom { background-color: #00d4ff; color: #000; }
         .nav-pills .nav-link.active { background-color: #0b6623; }
         .nav-pills .nav-link { color: #0b6623; font-weight: bold; }
-        <style>
-    /* கார்டின் அளவைச் சீராக்க */
-    .lab-card {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* பட்டனை கீழே தள்ளும் */
-        min-height: 300px; /* கார்டின் குறைந்தபட்ச உயரம் */
-        margin-bottom: 20px;
-    }
 
-    /* ஐகான் மற்றும் உரையை அழகாகக் காட்ட */
-    .card-body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* பட்டனை மொபைலில் முழு அகலத்திற்கு மாற்ற (Optional) */
-    @media (max-width: 768px) {
-        .btn-outline-primary {
-            width: 100%;
+        @media (max-width: 768px) {
+            .btn-success { width: 100%; }
         }
-    }
-
     </style>
 </head>
 <body>
@@ -101,18 +98,25 @@
                 <div class="row g-4">
                     <div class="col-md-4 col-sm-12">
                         <div class="card lab-card text-center p-4 shadow-sm h-100">
-                            <i class="bi bi-droplet-half card-icon text-info"></i>
-                            <h4 data-ta="அமிலம் மற்றும் காரம்" data-en="Acids and Bases">அமிலம் மற்றும் காரம்</h4>
-                            <p class="text-muted" data-ta="லிட்மஸ் தாள்களைக் கொண்டு பொருட்களைச் சோதித்தல்." data-en="Testing everyday items using litmus paper indicators.">லிட்மஸ் தாள்களைக் கொண்டு பொருட்களைச் சோதித்தல்.</p>
+                            <div class="card-body-content">
+                                <i class="bi bi-droplet-half card-icon text-info"></i>
+                                <h4 data-ta="அமிலம் மற்றும் காரம்" data-en="Acids and Bases">அமிலம் மற்றும் காரம்</h4>
+                                <p class="text-muted" data-ta="லிட்மஸ் தாள்களைக் கொண்டு பொருட்களைச் சோதித்தல்." data-en="Testing everyday items using litmus paper indicators.">லிட்மஸ் தாள்களைக் கொண்டு பொருட்களைச் சோதித்தல்.</p>
+                            </div>
                             <button class="btn btn-success mt-auto" onclick="window.location.href='acid-base.html'" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</button>
                         </div>
                     </div>
+                    
                     <div class="col-md-4 col-sm-12">
                         <div class="card lab-card text-center p-4 shadow-sm h-100">
-                            <i class="bi bi-grid-3x3-gap card-icon text-warning"></i>
-                            <h4 data-ta="தனிம வரிசை அட்டவணை" data-en="Periodic Table Explorer">தனிம வரிசை அட்டவணை</h4>
-                            <p class="text-muted" data-ta="தனிமங்களின் உலகிற்கு ஒரு மெய்நிகர் பயணம்." data-en="A virtual journey through the world of chemical elements.">தனிமங்களின் உலகிற்கு ஒரு மெய்நிகர் பயணம்.</p>
-                            <button class="btn btn-success mt-auto" onclick="window.location.href='Ptable.html'" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</button>
+                            <div class="card-body-content">
+                                <i class="bi bi-grid-3x3-gap card-icon text-warning"></i>
+                                <h4 data-ta="தனிம வரிசை அட்டவணை" data-en="Periodic Table Explorer">தனிம வரிசை அட்டவணை</h4>
+                                <p class="text-muted" data-ta="தனிமங்களின் உலகிற்கு ஒரு மெய்நிகர் பயணம்." data-en="A virtual journey through the world of chemical elements.">தனிமங்களின் உலகிற்கு ஒரு மெய்நிகர் பயணம்.</p>
+                            </div>
+                            <button class="btn btn-success mt-auto" onclick="window.open('https://zperiod.app', '_blank')" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">
+                                <span data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</span> <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -122,17 +126,21 @@
                 <div class="row g-4">
                     <div class="col-md-4 col-sm-12">
                         <div class="card lab-card text-center p-4 shadow-sm h-100">
-                            <i class="bi bi-moisture card-icon text-primary"></i>
-                            <h4 data-ta="நீரேறிய உப்புகள்" data-en="Hydrated Salts">நீரேறிய உப்புகள்</h4>
-                            <p class="text-muted" data-ta="நீல விட்ரியால் சூடாக்கும்போது ஏற்படும் மாற்றங்கள்." data-en="Observe changes when Blue Vitriol is heated.">நீல விட்ரியால் சூடாக்கும்போது ஏற்படும் மாற்றங்கள்.</p>
+                            <div class="card-body-content">
+                                <i class="bi bi-moisture card-icon text-primary"></i>
+                                <h4 data-ta="நீரேறிய உப்புகள்" data-en="Hydrated Salts">நீரேறிய உப்புகள்</h4>
+                                <p class="text-muted" data-ta="நீல விட்ரியால் சூடாக்கும்போது ஏற்படும் மாற்றங்கள்." data-en="Observe changes when Blue Vitriol is heated.">நீல விட்ரியால் சூடாக்கும்போது ஏற்படும் மாற்றங்கள்.</p>
+                            </div>
                             <button class="btn btn-success mt-auto" onclick="window.location.href='hydrated-salts.html'" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</button>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="card lab-card text-center p-4 shadow-sm h-100">
-                            <i class="bi bi-flame card-icon text-danger"></i>
-                            <h4 data-ta="வேதி வினைகளின் வகைகள்" data-en="Types of Reactions">வேதி வினைகளின் வகைகள்</h4>
-                            <p class="text-muted" data-ta="சேர்க்கை, சிதைவு மற்றும் இடப்பெயர்ச்சி வினைகள்." data-en="Combination, Decomposition, and Displacement reactions.">சேர்க்கை, சிதைவு மற்றும் இடப்பெயர்ச்சி வினைகள்.</p>
+                            <div class="card-body-content">
+                                <i class="bi bi-flame card-icon text-danger"></i>
+                                <h4 data-ta="வேதி வினைகளின் வகைகள்" data-en="Types of Reactions">வேதி வினைகளின் வகைகள்</h4>
+                                <p class="text-muted" data-ta="சேர்க்கை, சிதைவு மற்றும் இடப்பெயர்ச்சி வினைகள்." data-en="Combination, Decomposition, and Displacement reactions.">சேர்க்கை, சிதைவு மற்றும் இடப்பெயர்ச்சி வினைகள்.</p>
+                            </div>
                             <button class="btn btn-success mt-auto" onclick="window.location.href='reaction-types.html'" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</button>
                         </div>
                     </div>
@@ -143,25 +151,28 @@
                 <div class="row g-4">
                     <div class="col-md-4 col-sm-12">
                         <div class="card lab-card text-center p-4 shadow-sm h-100">
-                            <i class="bi bi-test-tube-fill card-icon"></i>
-                            <h4 data-ta="பகுப்பாய்வு வேதியியல்" data-en="Qualitative Analysis">பகுப்பாய்வு வேதியியல்</h4>
-                            <p class="text-muted" data-ta="கொடுக்கப்பட்ட உப்பில் உள்ள அயனிகளைக் கண்டறிதல்." data-en="Identification of cations and anions in a salt sample.">கொடுக்கப்பட்ட உப்பில் உள்ள அயனிகளைக் கண்டறிதல்.</p>
+                            <div class="card-body-content">
+                                <i class="bi bi-test-tube-fill card-icon"></i>
+                                <h4 data-ta="பகுப்பாய்வு வேதியியல்" data-en="Qualitative Analysis">பகுப்பாய்வு வேதியியல்</h4>
+                                <p class="text-muted" data-ta="கொடுக்கப்பட்ட உப்பில் உள்ள அயனிகளைக் கண்டறிதல்." data-en="Identification of cations and anions in a salt sample.">கொடுக்கப்பட்ட உப்பில் உள்ள அயனிகளைக் கண்டறிதல்.</p>
+                            </div>
                             <button class="btn btn-success mt-auto" onclick="window.location.href='qual-anls.html'" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</button>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="card lab-card text-center p-4 shadow-sm h-100">
-                            <i class="bi bi-funnel card-icon text-secondary"></i>
-                            <h4 data-ta="பருமன்முறை பகுப்பாய்வு" data-en="Volumetric Analysis">பருமன்முறை பகுப்பாய்வு</h4>
-                            <p class="text-muted" data-ta="டைட்ரேஷன் (Titration) மூலம் கரைசலின் செறிவைக் காணல்." data-en="Determining the molarity of a solution via Titration.">டைட்ரேஷன் (Titration) மூலம் கரைசலின் செறிவைக் காணல்.</p>
+                            <div class="card-body-content">
+                                <i class="bi bi-funnel card-icon text-secondary"></i>
+                                <h4 data-ta="பருமன்முறை பகுப்பாய்வு" data-en="Volumetric Analysis">பருமன்முறை பகுப்பாய்வு</h4>
+                                <p class="text-muted" data-ta="டைட்ரேஷன் (Titration) மூலம் கரைசலின் செறிவைக் காணல்." data-en="Determining the molarity of a solution via Titration.">டைட்ரேஷன் (Titration) மூலம் கரைசலின் செறிவைக் காணல்.</p>
+                            </div>
                             <button class="btn btn-success mt-auto" onclick="window.location.href='vol-anls.html'" data-ta="ஆய்வை தொடங்கு" data-en="Start Experiment">ஆய்வை தொடங்கு</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-        
-  </main>
+        </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -179,4 +190,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
